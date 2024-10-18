@@ -5,8 +5,18 @@ import { Types } from "mongoose";
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const books = await Book.find();
-    res.json(books);
+    const books = await Book.find().populate('author', 'name -_id');
+
+    const transformedBooks = books.map(book => {
+      const populatedAuthor = book.author as UserDocument;
+      return {
+        ...book.toObject(),
+        author: populatedAuthor.name,
+      };
+    });
+
+    console.log("books", transformedBooks);
+    res.json(transformedBooks);
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
@@ -117,7 +127,7 @@ export const deleteBook = async (req: Request, res: Response) => {
     }
 
     await Book.findByIdAndDelete(bookId);
-    res.json({ message: "Book deleted" });
+    res.json({ message: "Book deleted", book});
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
   }

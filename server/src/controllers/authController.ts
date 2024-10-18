@@ -51,7 +51,7 @@ export const login = async (
     user.refreshToken = refreshToken;
     await user.save();
 
-    res.status(200).json({ accessToken, refreshToken });
+    res.status(200).json({ name: user.name, email: user.email, username: user.username, accessToken, refreshToken });
   } catch (error) {
     res.status(500).json({ error: 'Login failed' });
   }
