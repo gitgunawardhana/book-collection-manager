@@ -47,8 +47,8 @@ export const getBooks = async (req: Request, res: Response) => {
 
 
 export const addBook = async (req: Request, res: Response) => {
-  const { title, genre, publicationDate } = req.body;
-  const userId = (req as any).user.id; // Get the logged-in user's ID from the token
+  const { title, genre, publicationDate, image } = req.body;
+  const userId = (req as any).user.id;
 
   if (!title || !genre || !publicationDate) {
      res.status(400).json({
@@ -58,19 +58,19 @@ export const addBook = async (req: Request, res: Response) => {
   }
 
   try {
-    // Create a new book with the logged-in user as the author
     console.log("userId", userId)
     const book = new Book({
       title,
-      author: new Types.ObjectId(userId),  // Set the author to the authenticated user
+      author: new Types.ObjectId(userId),
       genre,
       publicationDate,
+      image,
     });
 
     console.log("book", book)
-    await book.save();  // Save the book in the database
+    await book.save();
 
-    res.status(201).json(book);  // Respond with the newly created book
+    res.status(201).json(book);
   } catch (err) {
     res.status(500).json({
       message: "Internal server error",
@@ -98,7 +98,7 @@ export const getBook = async (req: Request, res: Response) => {
 };
 
 export const updateBook = async (req: Request, res: Response) => {
-  const { title, genre, publicationDate } = req.body;
+  const { title, genre, publicationDate, image } = req.body;
   const bookId = req.params.id;
   const userId = (req as any).user.id;
 
@@ -119,7 +119,7 @@ export const updateBook = async (req: Request, res: Response) => {
 
     const updatedBook = await Book.findByIdAndUpdate(
       bookId,
-      { title, genre, publicationDate },
+      { title, genre, publicationDate, image },
       { new: true }
     );
     res.json(updatedBook);

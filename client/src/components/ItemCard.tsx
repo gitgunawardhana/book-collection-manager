@@ -4,6 +4,7 @@ import ItemCardDetails from "./ItemCardDetails";
 import { AppDispatch } from "../app/store";
 import { useDispatch } from "react-redux";
 import { deleteBook, updateBook } from "../features/books/booksSlice";
+import { convertToBase64 } from "../utils";
 
 interface Book {
   _id?: string;
@@ -11,21 +12,21 @@ interface Book {
   author?: string;
   genre: string;
   publicationDate: string;
+  image?: string;
 }
 
 interface ItemCardProps {
   book?: Book;
 }
 
-const ItemCard: React.FC<ItemCardProps> = ({
-  book,
-}) => {
+const ItemCard: React.FC<ItemCardProps> = ({ book }) => {
   const dispatch: AppDispatch = useDispatch();
   const [editedBook, setEditedBook] = useState({
     _id: "",
     title: "",
     genre: "",
     publicationDate: "",
+    image: "",
   });
   const [editBookId, setEditBookId] = useState<string | null>(null);
   const [memo, setMemo] = useState<boolean | null>(false);
@@ -39,7 +40,18 @@ const ItemCard: React.FC<ItemCardProps> = ({
       publicationDate: new Date(book.publicationDate)
         .toISOString()
         .slice(0, 10),
+      image: book.image,
     });
+  };
+
+  const handleAvatarUpload = async (fileValue: any) => {
+    const file = fileValue;
+    const base64 = await convertToBase64(file);
+    setEditedBook({
+      ...editedBook,
+      image: base64,
+    });
+    setMemo(true);
   };
 
   const handleUpdateClick = async () => {
@@ -66,30 +78,24 @@ const ItemCard: React.FC<ItemCardProps> = ({
       className="group/card dark:bg-lime-green-250 hover:bg-lime-green-20 hover:dark:bg-lime-green-300 shadow-sm rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 transition-all"
     >
       <div className="md:flex-row p-2 md:grid gap-2 grid-cols-4 flex-col flex">
-        <div className="col-span-1">
-          <img
-            src="https://img.freepik.com/free-photo/book-composition-with-open-book_23-2147690555.jpg"
-            alt="Book"
-            className="rounded-[6px] h-full object-cover"
+        {/* <div className="col-span-3"> */}
+        {editBookId === book!._id ? (
+          <UpdateForm
+            editedBook={editedBook}
+            book={book!}
+            memo={memo}
+            handleInputChange={handleInputChange}
+            handleUpdateClick={handleUpdateClick}
+            handleAvatarUpload={handleAvatarUpload}
           />
-        </div>
-        <div className="col-span-3">
-          {editBookId === book!._id ? (
-            <UpdateForm
-              editedBook={editedBook}
-              book={book!}
-              memo={memo}
-              handleInputChange={handleInputChange}
-              handleUpdateClick={handleUpdateClick}
-            />
-          ) : (
-            <ItemCardDetails
-              book={book!}
-              handleEditClick={handleEditClick}
-              handleDeleteClick={handleDeleteClick}
-            />
-          )}
-        </div>
+        ) : (
+          <ItemCardDetails
+            book={book!}
+            handleEditClick={handleEditClick}
+            handleDeleteClick={handleDeleteClick}
+          />
+        )}
+        {/* </div> */}
       </div>
     </li>
   );

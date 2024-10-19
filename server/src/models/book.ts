@@ -6,6 +6,7 @@ export interface BookDocument extends Document {
   author: Types.ObjectId | UserDocument;
   genre: string;
   publicationDate: Date;
+  image: string;
 }
 
 const bookSchema = new Schema(
@@ -14,6 +15,7 @@ const bookSchema = new Schema(
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     genre: { type: String },
     publicationDate: { type: Date },
+    image: { type: String },
   },
   { timestamps: true }
 );

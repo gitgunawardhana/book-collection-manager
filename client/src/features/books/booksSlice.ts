@@ -8,6 +8,7 @@ interface Book {
   author?: string;
   genre: string;
   publicationDate: string;
+  image?: string | null;
 }
 
 interface BooksState {
@@ -60,8 +61,9 @@ export const deleteBook = createAsyncThunk(
 
 export const addBook = createAsyncThunk(
   "books/addBook",
-  async (updatedBook: Book) => {
-    const response = await axiosInstance.post("/books", updatedBook);
+  async (newBook: Book) => {
+    console.log("newBook",newBook)
+    const response = await axiosInstance.post("/books", newBook);
     return response.data;
   }
 );

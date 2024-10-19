@@ -10,7 +10,7 @@ interface InputFieldProps {
   disabled?: boolean;
   name?: string;
   accept?: string;
-  label?: string;
+  label?: string|React.ReactNode;
   labelClassName?: string;
   helperText?: string;
 }
