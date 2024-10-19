@@ -32,9 +32,9 @@ const initialState: BooksState = {
 
 export const fetchBooks = createAsyncThunk(
   "books/fetchBooks",
-  async ({ page = Number(localStorage.getItem("currentPage")) || 1, limit = 10 }: { page?: number; limit?: number }) => {
+  async ({ page = Number(localStorage.getItem("currentPage")) || 1, limit = 10, bookName }: { page?: number; limit?: number, bookName?: string }) => {
     const response = await axiosInstance.get("/books", {
-      params: { page, limit },
+      params: { page, limit, bookName },
     });
     console.log("response", response);
     return response.data;

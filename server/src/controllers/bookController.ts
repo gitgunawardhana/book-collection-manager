@@ -5,17 +5,21 @@ import { Types } from "mongoose";
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const page = parseInt(req.query.page as string, 10) || 1; // Default to page 1
-    const limit = parseInt(req.query.limit as string, 10) || 3; // Default to 10 items per page
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 3;
+    const bookName = req.query.bookName || null; 
     const skip = (page - 1) * limit;
 
-    // Fetch books with pagination
-    const books = await Book.find()
+    const query: any = {};
+    if (bookName) {
+      query.title = { $regex: bookName, $options: 'i' }; 
+    }
+
+    const books = await Book.find(query)
       .populate('author', 'name -_id')
       .skip(skip)
       .limit(limit);
 
-    // Transform books with populated author details
     const transformedBooks = books.map((book) => {
       const populatedAuthor = book.author as UserDocument;
       return {
@@ -24,14 +28,14 @@ export const getBooks = async (req: Request, res: Response) => {
       };
     });
 
-    // Get the total count of books in the database for pagination purposes
-    const totalBooks = await Book.countDocuments();
+    const totalBooks = await Book.find(query)
+    .populate('author', 'name -_id');
 
-    // Respond with the paginated books and pagination info
+    console.log(totalBooks.length)
     res.json({
       currentPage: page,
-      totalPages: Math.ceil(totalBooks / limit),
-      totalBooks,
+      totalPages: Math.ceil(totalBooks.length / limit),
+      totalBooks:totalBooks.length,
       books: transformedBooks,
       limit
     });

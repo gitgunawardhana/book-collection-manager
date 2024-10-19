@@ -15,8 +15,13 @@ import { FaSave } from "react-icons/fa";
 import { MdEditDocument } from "react-icons/md";
 import { MdDeleteSweep } from "react-icons/md";
 import PaginationContainer from "../components/PaginationContainer";
+import { useDebounce } from "use-debounce";
+import InputField from "../base-component/InputForm/InputField";
 
 const BookList = () => {
+  
+  const [searchText, setSearchText] = useState<any>();
+  const [debouncedSearchText] = useDebounce(searchText, 1000);
   const [currentPage, setCurrentPage] = useState(Number(localStorage.getItem("currentPage")) || 1);
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch: AppDispatch = useDispatch();
@@ -34,8 +39,8 @@ const BookList = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchBooks({ page: currentPage, limit:4 }));
-  }, [dispatch, currentPage]);
+    dispatch(fetchBooks({ page: currentPage, limit:4, bookName: debouncedSearchText }));
+  }, [dispatch, currentPage, debouncedSearchText]);
 
   const handleEditClick = (book: any) => {
     setEditBookId(book._id);
@@ -77,6 +82,18 @@ const BookList = () => {
       >
         {user!.name}
       </HeadingTitle>
+      <br />
+      <InputField
+          label="Search Book"
+          type="text"
+          className="focus:!border-lime-green-50 border-solid !border-lime-green-200 dark:focus:border-lime-green-100"
+          labelClassName="dark:bg-lime-green-300 peer-focus:!text-lime-green-50 !text-lime-green-100 peer-focus:dark:text-lime-green-100"
+          helperText={`Search from book name...`}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+          }}
+          value={searchText}
+        />
       <br />
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {books.map((book) => (
