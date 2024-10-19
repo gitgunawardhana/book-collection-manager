@@ -31,7 +31,6 @@ export const getBooks = async (req: Request, res: Response) => {
     const totalBooks = await Book.find(query)
     .populate('author', 'name -_id');
 
-    console.log(totalBooks.length)
     res.json({
       currentPage: page,
       totalPages: Math.ceil(totalBooks.length / limit),
