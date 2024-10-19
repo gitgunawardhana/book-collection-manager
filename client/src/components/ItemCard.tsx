@@ -78,7 +78,6 @@ const ItemCard: React.FC<ItemCardProps> = ({ book }) => {
       className="group/card dark:bg-lime-green-250 hover:bg-lime-green-20 hover:dark:bg-lime-green-300 shadow-sm rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 transition-all"
     >
       <div className="md:flex-row p-2 md:grid gap-2 grid-cols-4 flex-col flex">
-        {/* <div className="col-span-3"> */}
         {editBookId === book!._id ? (
           <UpdateForm
             editedBook={editedBook}
@@ -95,7 +94,6 @@ const ItemCard: React.FC<ItemCardProps> = ({ book }) => {
             handleDeleteClick={handleDeleteClick}
           />
         )}
-        {/* </div> */}
       </div>
     </li>
   );

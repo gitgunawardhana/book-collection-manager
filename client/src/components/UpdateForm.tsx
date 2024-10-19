@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { FaSave } from "react-icons/fa";
+import { MdCancel } from "react-icons/md";
 import Button from "../base-component/InputForm/Button";
 import { IoIosCloseCircle } from "react-icons/io";
 import { useDropzone } from "react-dropzone";
@@ -110,7 +110,7 @@ const UpdateForm: React.FC<UpdateFormProps> = ({
           className="group my-0 rounded-full bg-[#e7e7e7] py-1 text-slate-700 hover:!bg-lime-green-100 hover:text-[#FFFFFF] dark:!bg-[#303d5e] dark:text-[#FFFFFF] dark:hover:!bg-lime-green-100"
           onClick={handleUpdateClick}
         >
-          <FaSave className="mr-2 w-4" />
+          <MdCancel className="mr-2 w-4" />
           <span className="translate-y-[1px]">
             {memo ? "Update" : "Cancel"}
           </span>

@@ -8,7 +8,7 @@ interface Book {
   author?: string;
   genre: string;
   publicationDate: string;
-  image?: string | null;
+  image?: string;
 }
 
 interface BooksState {

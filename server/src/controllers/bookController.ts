@@ -121,8 +121,14 @@ export const updateBook = async (req: Request, res: Response) => {
       bookId,
       { title, genre, publicationDate, image },
       { new: true }
-    );
-    res.json(updatedBook);
+    )
+    .populate('author', 'name -_id');
+
+    const populatedAuthor = updatedBook!.author as UserDocument;
+
+    const transformedBook = {...updatedBook!.toObject(), author: populatedAuthor.name}
+
+    res.json(transformedBook);
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",

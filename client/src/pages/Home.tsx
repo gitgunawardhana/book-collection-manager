@@ -15,7 +15,7 @@ const Home = () => {
           className=""
           bottomDescription="Manage Your Book Collection with Ease."
         >
-          {user!.name}
+          Hello' <span className="text-lime-green-100 dark:text-lime-green-50">{user!.name}</span> ...
         </HeadingTitle>
         <br />
         <InputField

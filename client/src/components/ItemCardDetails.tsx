@@ -1,6 +1,7 @@
 import React from "react";
 import { MdEditDocument, MdDeleteSweep } from "react-icons/md";
 import Button from "../base-component/InputForm/Button";
+import { useSelector } from "react-redux";
 
 interface Book {
   _id?: string;
@@ -21,6 +22,7 @@ const ItemCardDetails: React.FC<ItemCardDetailsProps> = ({
   handleEditClick,
   handleDeleteClick,
 }) => {
+  const user = useSelector((state: { auth: { user: any } }) => state.auth.user);
   return (
     <>
       <div className="col-span-1">
@@ -48,24 +50,33 @@ const ItemCardDetails: React.FC<ItemCardDetailsProps> = ({
           Publication Date:{" "}
           {new Date(book.publicationDate).toLocaleDateString()}
         </p>
-        <div className="flex gap-2 mt-2">
-          <Button
-            className="group my-0 rounded-full bg-[#e7e7e7] py-1 text-slate-700 hover:!bg-[#d3d3d3] hover:text-slate-700 dark:!bg-[#303d5e] dark:text-[#FFFFFF] dark:hover:!bg-[#3c4c70]"
-            onClick={() => handleEditClick(book)}
-          >
-            <MdEditDocument className="mr-2 w-4 text-lime-green-100" />
-            <span className="translate-y-[1px]">Edit</span>
-          </Button>
-          <Button
-            className="group my-0 rounded-full bg-[#e7e7e7] py-1 text-slate-700 hover:!bg-[#c2410c] hover:text-slate-700 dark:!bg-[#303d5e] dark:text-[#FFFFFF] dark:hover:!bg-[#c2410c]"
-            onClick={() => handleDeleteClick(book._id!)}
-          >
-            <MdDeleteSweep className="mr-2 w-4 text-[#c2410c] group-hover:text-white" />
-            <span className="translate-y-[1px] group-hover:text-white">
-              Delete
-            </span>
-          </Button>
-        </div>
+        {user.name === book.author ? (
+          <div className="flex gap-2 mt-2">
+            <Button
+              className="group my-0 rounded-full bg-[#e7e7e7] py-1 text-slate-700 hover:!bg-[#d3d3d3] hover:text-slate-700 dark:!bg-[#303d5e] dark:text-[#FFFFFF] dark:hover:!bg-[#3c4c70]"
+              onClick={() => handleEditClick(book)}
+            >
+              <MdEditDocument className="mr-2 w-4 text-lime-green-100" />
+              <span className="translate-y-[1px]">Edit</span>
+            </Button>
+            <Button
+              className="group my-0 rounded-full bg-[#e7e7e7] py-1 text-slate-700 hover:!bg-[#c2410c] hover:text-slate-700 dark:!bg-[#303d5e] dark:text-[#FFFFFF] dark:hover:!bg-[#c2410c]"
+              onClick={() => handleDeleteClick(book._id!)}
+            >
+              <MdDeleteSweep className="mr-2 w-4 text-[#c2410c] group-hover:text-white" />
+              <span className="translate-y-[1px] group-hover:text-white">
+                Delete
+              </span>
+            </Button>
+          </div>
+        ) : (
+          <div className="flex gap-2 justify-center items-center">
+            <span className="bg-yellow-100 border border-yellow-400 rounded-md p-1 bg-opacity-20">⚠️</span>
+            <p className="text-yellow-800 rounded-md py-3 text-sm font-semibold">
+              You are not authorized to update this item. You can only view it.
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
