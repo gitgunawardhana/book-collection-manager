@@ -5,9 +5,18 @@ import { Types } from "mongoose";
 
 export const getBooks = async (req: Request, res: Response) => {
   try {
-    const books = await Book.find().populate('author', 'name -_id');
+    const page = parseInt(req.query.page as string, 10) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit as string, 10) || 3; // Default to 10 items per page
+    const skip = (page - 1) * limit;
 
-    const transformedBooks = books.map(book => {
+    // Fetch books with pagination
+    const books = await Book.find()
+      .populate('author', 'name -_id')
+      .skip(skip)
+      .limit(limit);
+
+    // Transform books with populated author details
+    const transformedBooks = books.map((book) => {
       const populatedAuthor = book.author as UserDocument;
       return {
         ...book.toObject(),
@@ -15,14 +24,24 @@ export const getBooks = async (req: Request, res: Response) => {
       };
     });
 
-    console.log("books", transformedBooks);
-    res.json(transformedBooks);
+    // Get the total count of books in the database for pagination purposes
+    const totalBooks = await Book.countDocuments();
+
+    // Respond with the paginated books and pagination info
+    res.json({
+      currentPage: page,
+      totalPages: Math.ceil(totalBooks / limit),
+      totalBooks,
+      books: transformedBooks,
+      limit
+    });
   } catch (error) {
     res.status(500).json({
       message: "Internal server error",
     });
   }
 };
+
 
 export const addBook = async (req: Request, res: Response) => {
   const { title, genre, publicationDate } = req.body;

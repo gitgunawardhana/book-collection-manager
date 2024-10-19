@@ -12,20 +12,34 @@ interface Book {
 
 interface BooksState {
   books: Book[];
+  currentPage: number;
+  totalPages: number;
+  totalBooks: number | null;
+  limit: number;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: BooksState = {
   books: [],
+  currentPage: Number(localStorage.getItem("currentPage")) || 1,
+  totalPages: 1,
+  totalBooks: null,
+  limit: 10,
   loading: false,
   error: null,
 };
 
-export const fetchBooks = createAsyncThunk("books/fetchBooks", async () => {
-  const response = await axiosInstance.get("/books");
-  return response.data;
-});
+export const fetchBooks = createAsyncThunk(
+  "books/fetchBooks",
+  async ({ page = Number(localStorage.getItem("currentPage")) || 1, limit = 10 }: { page?: number; limit?: number }) => {
+    const response = await axiosInstance.get("/books", {
+      params: { page, limit },
+    });
+    console.log("response", response);
+    return response.data;
+  }
+);
 
 export const updateBook = createAsyncThunk(
   "books/updateBook",
@@ -47,7 +61,7 @@ export const deleteBook = createAsyncThunk(
 export const addBook = createAsyncThunk(
   "books/addBook",
   async (updatedBook: Book) => {
-    const response = await axiosInstance.post('/books', updatedBook);
+    const response = await axiosInstance.post("/books", updatedBook);
     return response.data;
   }
 );
@@ -55,7 +69,13 @@ export const addBook = createAsyncThunk(
 const booksSlice = createSlice({
   name: "books",
   initialState,
-  reducers: {},
+  reducers: {
+    updateCurrentPage: (state, action) => {
+      console.log("Set current page:", action.payload);
+      state.currentPage = action.payload;
+      localStorage.setItem("currentPage", JSON.stringify(action.payload));
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBooks.pending, (state) => {
@@ -64,7 +84,11 @@ const booksSlice = createSlice({
       })
       .addCase(fetchBooks.fulfilled, (state, action) => {
         state.loading = false;
-        state.books = action.payload;
+        state.books = action.payload.books;
+        state.totalPages = action.payload.totalPages;
+        state.totalBooks = action.payload.totalBooks;
+        state.currentPage = action.payload.currentPage;
+        state.limit = action.payload.limit;
       })
       .addCase(fetchBooks.rejected, (state, action) => {
         state.loading = false;
@@ -119,7 +143,7 @@ const booksSlice = createSlice({
       .addCase(deleteBook.fulfilled, (state, action) => {
         state.loading = false;
         const deletedBookId = action.payload.book._id;
-        state.books = state.books.filter(book => book._id !== deletedBookId);
+        state.books = state.books.filter((book) => book._id !== deletedBookId);
         toast.success("Deleted Successfull", {
           position: "top-right",
           autoClose: 2000,
@@ -147,7 +171,7 @@ const booksSlice = createSlice({
       })
       .addCase(addBook.fulfilled, (state, action) => {
         state.loading = false;
-        const newBook  = action.payload;
+        const newBook = action.payload;
         state.books.push(newBook);
         // update state.books[]
         toast.success("Book Added Successfully", {
@@ -174,4 +198,5 @@ const booksSlice = createSlice({
   },
 });
 
+export const { updateCurrentPage } = booksSlice.actions;
 export default booksSlice.reducer;
