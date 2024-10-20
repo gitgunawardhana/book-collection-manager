@@ -33,7 +33,7 @@ const ItemCardDetails: React.FC<ItemCardDetailsProps> = ({
               : "https://cdn.iconscout.com/icon/free/png-256/gallery-187-902099.png"
           }
           alt="Book"
-          className="rounded-[6px] h-full w-full object-cover"
+          className="rounded-[6px] h-80 sm:h-56 md:h-36 w-full object-cover"
         />
       </div>
       <div className="col-span-3">

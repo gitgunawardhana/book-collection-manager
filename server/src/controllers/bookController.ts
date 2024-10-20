@@ -55,7 +55,6 @@ export const getBooks = async (req: Request, res: Response) => {
   }
 };
 
-
 export const addBook = async (req: Request, res: Response) => {
   const { title, genre, publicationDate, image } = req.body;
   const userId = (req as any).user.id;
