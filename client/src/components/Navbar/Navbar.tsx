@@ -4,9 +4,9 @@ import { HiMiniBars3, HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import { logout } from "../../features/auth/authSlice";
+import { logoutUser } from "../../features/auth/authSlice";
 import { toggleDarkMode } from "../../features/theme/themeSlice";
-import { RootState } from "../../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 import Swal from 'sweetalert2';
 
@@ -26,7 +26,7 @@ const navigation = (user: any) => [
 const Navbar: React.FC = () => {
   const logo = require("../../assets/logo.png");
   const mode = useSelector((state: RootState) => state.theme.mode);
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: { auth: { user: any } }) => state.auth.user);
 
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
     });
 
     if (result.isConfirmed) {
-      dispatch(logout());
+      dispatch(logoutUser());
       navigate("/login");
     }
   };

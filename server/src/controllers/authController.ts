@@ -190,3 +190,47 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) {
+     res.status(400).json({
+      success: false,
+      status: 400,
+      message: "Refresh token is required",
+      data: null,
+    });
+    return
+  }
+
+  try {
+    const user = await User.findOne({ refreshToken });
+    if (!user) {
+       res.status(404).json({
+        success: false,
+        status: 404,
+        message: "User not found",
+        data: null,
+      });
+      return
+    }
+
+    user.refreshToken = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Logout successful",
+      data: null,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: error.message || "An error occurred during logout",
+      data: null,
+    });
+  }
+};

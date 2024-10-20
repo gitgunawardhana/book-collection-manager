@@ -32,6 +32,17 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async () => {
+    const user = localStorage.getItem('user');
+    const { refreshToken } = JSON.parse(user!);
+    const response = await axiosInstance.post("/auth/logout", { refreshToken });
+    console.log("Logout response received:", response.data);
+    return response.data.data;
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -67,8 +78,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         console.log("Login request fulfilled:", action.payload);
         state.loading = false;
-        state.user = action.payload; // Store user data
-        localStorage.setItem("user", JSON.stringify(action.payload)); // Save to localStorage
+        state.user = action.payload;
+        localStorage.setItem("user", JSON.stringify(action.payload));
         toast.success("Login Successfull", {
           position: "top-right",
           autoClose: 2000,
@@ -80,6 +91,38 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         console.log("Login request failed:", action.error.message);
+        state.loading = false;
+        state.error = action.error.message || "Login failed";
+        toast.error("Login failed", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          theme: localStorage.getItem("darkMode") === "true" ? "dark" : "light",
+        });
+      })
+      .addCase(logoutUser.pending, (state) => {
+        console.log("Logout request is pending...");
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state, action) => {
+        console.log("Logout request fulfilled:", action.payload);
+        state.loading = false;
+        state.user = null;
+        localStorage.removeItem("user");
+        toast.success("Logout Successfull", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          draggable: true,
+          theme: localStorage.getItem("darkMode") === "true" ? "dark" : "light",
+        });
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        console.log("Logout request failed:", action.error.message);
         state.loading = false;
         state.error = action.error.message || "Login failed";
         toast.error("Login failed", {
