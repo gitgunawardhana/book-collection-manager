@@ -13,6 +13,9 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    
+const BACKEND_BASE_URL = process.env;
+console.log("BACKEND_BASE_URL", BACKEND_BASE_URL)
     const user = localStorage.getItem('user');
     if (user) {
       dispatch(loadUser());

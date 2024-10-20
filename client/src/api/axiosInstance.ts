@@ -1,7 +1,8 @@
 import axios from 'axios';
+const BACKEND_BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: BACKEND_BASE_URL,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -23,7 +24,7 @@ axiosInstance.interceptors.response.use(
       if (user) {
         const { refreshToken } = JSON.parse(user);
         try {
-          const response = await axios.post('http://localhost:8080/api/auth/refresh-token', { refreshToken });
+          const response = await axios.post(`${BACKEND_BASE_URL}/auth/refresh-token`, { refreshToken });
           
           const newAccessToken = response.data.accessToken;
 

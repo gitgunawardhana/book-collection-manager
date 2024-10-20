@@ -8,7 +8,7 @@ import { logout } from "../features/auth/authSlice";
 import { toggleDarkMode } from "../features/theme/themeSlice";
 import { RootState } from "../app/store";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-import logo from '../assets/logo.png'
+// import logo from '../assets/logo.png'
 
 const navigation = (user: any) => [
   ...(user
@@ -24,6 +24,7 @@ const navigation = (user: any) => [
 ];
 
 const Navbar: React.FC = () => {
+  const logo = require('../assets/logo.png');
   const mode = useSelector((state: RootState) => state.theme.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();

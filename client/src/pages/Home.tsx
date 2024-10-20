@@ -21,8 +21,8 @@ const Home = () => {
         <InputField
           label="Search Book"
           type="text"
-          className="focus:!border-lime-green-50 border-solid !border-lime-green-200 dark:focus:border-lime-green-100"
-          labelClassName="dark:bg-lime-green-300 peer-focus:!text-lime-green-50 !text-lime-green-100 peer-focus:dark:text-lime-green-100"
+          className="focus:!border-lime-green-100 border-solid !border-lime-green-200 dark:focus:border-lime-green-100"
+          labelClassName="dark:bg-lime-green-300 peer-focus:!text-lime-green-100 !text-lime-green-200 dark:!text-lime-green-100 peer-focus:dark:text-lime-green-100"
           helperText={`Search from book name...`}
           onChange={(e) => {
             setSearchText(e.target.value);

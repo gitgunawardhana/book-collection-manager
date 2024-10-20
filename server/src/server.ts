@@ -22,5 +22,5 @@ connectDB();
 app.use("/api", allRoutes);
 
 app.listen(PORT, () =>
-  console.log("Server has started on port http://localhost:8080")
+  console.log("Server has started on port 8080")
 );

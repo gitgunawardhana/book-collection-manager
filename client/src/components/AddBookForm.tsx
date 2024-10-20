@@ -16,7 +16,7 @@ const AddBookForm: React.FC = () => {
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [publicationDate, setPublicationDate] = useState("");
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string>();
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {
