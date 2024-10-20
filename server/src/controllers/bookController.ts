@@ -17,6 +17,7 @@ export const getBooks = async (req: Request, res: Response) => {
 
     const books = await Book.find(query)
       .populate('author', 'name -_id')
+      .sort({ _id: -1 })
       .skip(skip)
       .limit(limit);
 
@@ -31,16 +32,25 @@ export const getBooks = async (req: Request, res: Response) => {
     const totalBooks = await Book.find(query)
     .populate('author', 'name -_id');
 
-    res.json({
-      currentPage: page,
-      totalPages: Math.ceil(totalBooks.length / limit),
-      totalBooks:totalBooks.length,
-      books: transformedBooks,
-      limit
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Books retrieved successfully",
+      data: {
+        currentPage: page,
+        totalPages: Math.ceil(totalBooks.length / limit),
+        totalBooks:totalBooks.length,
+        books: transformedBooks,
+        limit
+      },
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
+      success: false,
+      status: 500,
       message: "Internal server error",
+      error: error.message || "An error occurred",
+      data: null,
     });
   }
 };
@@ -51,8 +61,11 @@ export const addBook = async (req: Request, res: Response) => {
   const userId = (req as any).user.id;
 
   if (!title || !genre || !publicationDate) {
-     res.status(400).json({
+    res.status(400).json({
+      success: false,
+      status: 400,
       message: "Title, genre, and publication date are required fields",
+      data: null,
     });
     return
   }
@@ -67,13 +80,21 @@ export const addBook = async (req: Request, res: Response) => {
       image,
     });
 
-    console.log("book", book)
     await book.save();
 
-    res.status(201).json(book);
-  } catch (err) {
+    res.status(201).json({
+      success: true,
+      status: 201,
+      message: "Book added successfully",
+      data: book,
+    });
+  } catch (error: any) {
     res.status(500).json({
+      success: false,
+      status: 500,
       message: "Internal server error",
+      error: error.message || "An error occurred",
+      data: null,
     });
   }
 };
@@ -85,14 +106,28 @@ export const getBook = async (req: Request, res: Response) => {
     );
 
     if (!book) {
-      res.status(404).json({ error: "Book not found" });
+      res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Book not found",
+        data: null,
+      });
       return;
     }
 
-    res.json(book);
-  } catch (error) {
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Book retrieved successfully",
+      data: book,
+    });
+  } catch (error: any) {
     res.status(500).json({
+      success: false,
+      status: 500,
       message: "Internal server error",
+      error: error.message || "An error occurred",
+      data: null,
     });
   }
 };
@@ -107,13 +142,23 @@ export const updateBook = async (req: Request, res: Response) => {
     const book = await Book.findById(bookId).populate("author", "_id") as BookDocument;
 
     if (!book) {
-      res.status(404).json({ error: "Book not found" });
+      res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Book not found",
+        data: null,
+      });
       return
    }
 
    // Check authorization
    if (book.author?._id?.toString() !== userId.toString()) {
-      res.status(403).json({ error: "You are not authorized to update this book" });
+      res.status(403).json({
+        success: false,
+        status: 403,
+        message: "You are not authorized to update this book",
+        data: null,
+      });
       return
    }
 
@@ -128,10 +173,19 @@ export const updateBook = async (req: Request, res: Response) => {
 
     const transformedBook = {...updatedBook!.toObject(), author: populatedAuthor.name}
 
-    res.json(transformedBook);
-  } catch (error) {
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Book updated successfully",
+      data: transformedBook,
+    });
+  } catch (error: any) {
     res.status(500).json({
+      success: false,
+      status: 500,
       message: "Internal server error",
+      error: error.message || "An error occurred",
+      data: null,
     });
   }
 };
@@ -144,19 +198,41 @@ export const deleteBook = async (req: Request, res: Response) => {
     const book = await Book.findById(bookId).populate("author", "_id") as BookDocument;
 
     if (!book) {
-       res.status(404).json({ error: "Book not found" });
+      res.status(404).json({
+        success: false,
+        status: 404,
+        message: "Book not found",
+        data: null,
+      });
        return
     }
 
     // Check authorization
     if (book.author?._id?.toString() !== userId.toString()) {
-       res.status(403).json({ error: "You are not authorized to delete this book" });
+      res.status(403).json({
+        success: false,
+        status: 403,
+        message: "You are not authorized to delete this book",
+        data: null,
+      });
        return
     }
 
     await Book.findByIdAndDelete(bookId);
-    res.json({ message: "Book deleted", book});
-  } catch (error) {
-    res.status(500).json({ message: "Internal server error" });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Book deleted successfully",
+      data: book,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      status: 500,
+      message: "Internal server error",
+      error: error.message || "An error occurred",
+      data: null,
+    });
   }
 };

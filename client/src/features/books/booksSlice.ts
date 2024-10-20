@@ -38,7 +38,7 @@ export const fetchBooks = createAsyncThunk(
       params: { page, limit, bookName },
     });
     console.log("response", response);
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -47,7 +47,7 @@ export const updateBook = createAsyncThunk(
   async (updatedBook: Book) => {
     const { _id } = updatedBook;
     const response = await axiosInstance.put(`/books/${_id}`, updatedBook);
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -55,7 +55,7 @@ export const deleteBook = createAsyncThunk(
   "books/deleteBook",
   async (bookId: string) => {
     const response = await axiosInstance.delete(`/books/${bookId}`);
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -64,7 +64,7 @@ export const addBook = createAsyncThunk(
   async (newBook: Book) => {
     console.log("newBook",newBook)
     const response = await axiosInstance.post("/books", newBook);
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -144,7 +144,7 @@ const booksSlice = createSlice({
       })
       .addCase(deleteBook.fulfilled, (state, action) => {
         state.loading = false;
-        const deletedBookId = action.payload.book._id;
+        const deletedBookId = action.payload._id;
         state.books = state.books.filter((book) => book._id !== deletedBookId);
         toast.success("Deleted Successfull", {
           position: "top-right",

@@ -18,7 +18,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData: { name: string; email: string; username: string; password: string }) => {
     const response = await axiosInstance.post("/auth/register", userData);
-    return response.data;
+    return response.data.data;
   }
 );
 
@@ -28,7 +28,7 @@ export const loginUser = createAsyncThunk(
     console.log("Attempting to log in with credentials:", userData);
     const response = await axiosInstance.post("/auth/login", userData);
     console.log("Login response received:", response.data);
-    return response.data;
+    return response.data.data;
   }
 );
 
