@@ -1,7 +1,7 @@
 import React from "react";
-import HeadingTitle from "../base-component/HeadingTitle";
-import RegisterForm from "../components/RegisterForm";
-import ParaText from "../base-component/ParaText";
+import HeadingTitle from "../../base-component/HeadingTitle";
+import RegisterForm from "../../components/RegisterForm/RegisterForm";
+import ParaText from "../../base-component/ParaText";
 
 const Register: React.FC = () => {
   return (

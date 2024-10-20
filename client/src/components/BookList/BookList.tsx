@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBooks } from "../features/books/booksSlice";
-import { AppDispatch, RootState } from "../app/store";
-import PaginationContainer from "./PaginationContainer";
+import { fetchBooks } from "../../features/books/booksSlice";
+import { AppDispatch, RootState } from "../../app/store";
+import PaginationContainer from "../PaginationContainer/PaginationContainer";
 import { useDebounce } from "use-debounce";
-import ItemCard from "./ItemCard";
+import ItemCard from "../ItemCard/ItemCard";
 import { ImSpinner9 } from "react-icons/im";
 
 interface BookListProps {

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import HeadingTitle from "../base-component/HeadingTitle";
-import ParaText from "../base-component/ParaText";
-import AddBookForm from "../components/AddBookForm";
+import React from "react";
+import HeadingTitle from "../../base-component/HeadingTitle";
+import ParaText from "../../base-component/ParaText";
+import AddBookForm from "../../components/AddBookForm/AddBookForm";
 
 const AddBook: React.FC = () => {
 

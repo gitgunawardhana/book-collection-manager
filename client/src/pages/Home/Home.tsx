@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import BookList from "../components/BookList";
-import InputField from "../base-component/InputForm/InputField";
-import HeadingTitle from "../base-component/HeadingTitle";
-import { RootState } from "../app/store";
+import BookList from "../../components/BookList/BookList";
+import InputField from "../../base-component/InputForm/InputField";
+import HeadingTitle from "../../base-component/HeadingTitle";
+import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
 
 const Home = () => {

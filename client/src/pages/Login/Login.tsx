@@ -1,12 +1,7 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../features/auth/authSlice";
-import { AppDispatch } from "../app/store";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import HeadingTitle from "../base-component/HeadingTitle";
-import ParaText from "../base-component/ParaText";
-import LoginForm from "../components/LoginForm";
+import React from "react";
+import HeadingTitle from "../../base-component/HeadingTitle";
+import ParaText from "../../base-component/ParaText";
+import LoginForm from "../../components/LoginForm/LoginForm";
 
 const Login: React.FC = () => {
   return (

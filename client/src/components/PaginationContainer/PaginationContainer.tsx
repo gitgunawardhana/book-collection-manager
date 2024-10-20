@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { MdOutlineNavigateBefore, MdOutlineNavigateNext } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../app/store";
-import { updateCurrentPage } from "../features/books/booksSlice";
+import { AppDispatch, RootState } from "../../app/store";
+import { updateCurrentPage } from "../../features/books/booksSlice";
 
 interface PaginationContainerProps {
   currentPage: number;

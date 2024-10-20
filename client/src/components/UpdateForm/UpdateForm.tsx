@@ -1,9 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { MdCancel } from "react-icons/md";
-import Button from "../base-component/InputForm/Button";
+import Button from "../../base-component/InputForm/Button";
 import { IoIosCloseCircle } from "react-icons/io";
 import { useDropzone } from "react-dropzone";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "../ImageUploader/ImageUploader";
 
 interface Book {
   _id?: string;
@@ -31,7 +31,6 @@ const UpdateForm: React.FC<UpdateFormProps> = ({
   handleAvatarUpload,
   memo,
 }) => {
-  const [image, setImage] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | ArrayBuffer | null>(null);
 
   const onDrop = useCallback((acceptedFiles: Array<File>) => {

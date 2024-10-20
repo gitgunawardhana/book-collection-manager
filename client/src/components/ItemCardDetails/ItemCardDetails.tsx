@@ -1,6 +1,6 @@
 import React from "react";
 import { MdEditDocument, MdDeleteSweep } from "react-icons/md";
-import Button from "../base-component/InputForm/Button";
+import Button from "../../base-component/InputForm/Button";
 import { useSelector } from "react-redux";
 
 interface Book {

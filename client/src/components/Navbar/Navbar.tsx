@@ -1,14 +1,14 @@
 import { Disclosure } from "@headlessui/react";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { HiMiniBars3, HiMiniBars3CenterLeft } from "react-icons/hi2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import { logout } from "../features/auth/authSlice";
-import { toggleDarkMode } from "../features/theme/themeSlice";
-import { RootState } from "../app/store";
+import { logout } from "../../features/auth/authSlice";
+import { toggleDarkMode } from "../../features/theme/themeSlice";
+import { RootState } from "../../app/store";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
-// import logo from '../assets/logo.png'
+import Swal from 'sweetalert2';
 
 const navigation = (user: any) => [
   ...(user
@@ -24,15 +24,27 @@ const navigation = (user: any) => [
 ];
 
 const Navbar: React.FC = () => {
-  const logo = require('../assets/logo.png');
+  const logo = require("../../assets/logo.png");
   const mode = useSelector((state: RootState) => state.theme.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state: { auth: { user: any } }) => state.auth.user);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
+  const handleLogout = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#5D9D0B",
+      cancelButtonColor: "#c2410c",
+      confirmButtonText: "Yes, log out!",
+    });
+
+    if (result.isConfirmed) {
+      dispatch(logout());
+      navigate("/login");
+    }
   };
 
   return (
@@ -56,7 +68,12 @@ const Navbar: React.FC = () => {
                 <div className="flex flex-1 items-center justify-start sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
                     <Link to="/" className="dark:text-lime-green-100">
-                      <div className="flex justify-center items-center gap-2"><img src={logo} alt="logo" className="w-12 h-12" /><span className="font-extrabold uppercase">Book Collection</span></div>
+                      <div className="flex justify-center items-center gap-2">
+                        <img src={logo} alt="logo" className="w-12 h-12" />
+                        <span className="font-extrabold uppercase">
+                          Book Collection
+                        </span>
+                      </div>
                     </Link>
                   </div>
                 </div>

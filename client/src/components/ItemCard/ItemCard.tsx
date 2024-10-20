@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import UpdateForm from "./UpdateForm";
-import ItemCardDetails from "./ItemCardDetails";
-import { AppDispatch } from "../app/store";
+import UpdateForm from "../UpdateForm/UpdateForm";
+import ItemCardDetails from "../ItemCardDetails/ItemCardDetails";
+import { AppDispatch } from "../../app/store";
 import { useDispatch } from "react-redux";
-import { deleteBook, updateBook } from "../features/books/booksSlice";
-import { convertToBase64 } from "../utils";
+import { deleteBook, updateBook } from "../../features/books/booksSlice";
+import { convertToBase64 } from "../../utils";
+import Swal from 'sweetalert2';
 
 interface Book {
   _id?: string;
@@ -61,7 +62,19 @@ const ItemCard: React.FC<ItemCardProps> = ({ book }) => {
   };
 
   const handleDeleteClick = async (bookId: string) => {
-    dispatch(deleteBook(bookId));
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to undo this action!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#5D9D0B',
+      cancelButtonColor: '#c2410c',
+      confirmButtonText: 'Yes, delete it!',
+    });
+  
+    if (result.isConfirmed) {
+      dispatch(deleteBook(bookId));
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

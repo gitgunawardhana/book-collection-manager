@@ -1,11 +1,10 @@
 import { useRoutes } from "react-router-dom";
-import ProtectedRoute from "../components/ProtectedRoute";
-import Login from "../pages/Login";
-import PrivateRouteInverse from "../components/PrivateRouteInverse";
-import Register from "../pages/Register";
-import BookList from "../components/BookList";
-import AddBook from "../pages/AddBook";
-import Home from "../pages/Home";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import Login from "../pages/Login/Login";
+import PrivateRouteInverse from "../components/PrivateRouteInverse/PrivateRouteInverse";
+import Register from "../pages/Register/Register";
+import AddBook from "../pages/AddBook/AddBook";
+import Home from "../pages/Home/Home";
 
 function Router() {
   const routes = [

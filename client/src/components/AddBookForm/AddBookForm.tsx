@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from "react";
-import { AppDispatch, RootState } from "../app/store";
+import { AppDispatch, RootState } from "../../app/store";
 import { useDispatch, useSelector } from "react-redux";
-import InputField from "../base-component/InputForm/InputField";
-import Button from "../base-component/InputForm/Button";
+import InputField from "../../base-component/InputForm/InputField";
+import Button from "../../base-component/InputForm/Button";
 import { ImSpinner9 } from "react-icons/im";
-import { addBook } from "../features/books/booksSlice";
-import { convertToBase64 } from "../utils";
+import { addBook } from "../../features/books/booksSlice";
+import { convertToBase64 } from "../../utils";
 import { useDropzone } from "react-dropzone";
-import ImageUploader from "./ImageUploader";
+import ImageUploader from "../ImageUploader/ImageUploader";
 import { IoIosCloseCircle } from "react-icons/io";
 
 const AddBookForm: React.FC = () => {
