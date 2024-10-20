@@ -5,3 +5,11 @@
 * {
   font-family: "Inter", sans-serif;
 }
+
+body {
+  @apply bg-lime-green transition-colors duration-300;
+}
+
+body.dark {
+  @apply bg-lime-green-300 text-white;
+}
