@@ -114,6 +114,9 @@ A full-stack web application for managing a personal book collection. This appli
 - PUT `/api/books/:id`: Update an existing book by ID.
 - DELETE `/api/books/:id`: Delete a book by ID.
 
+### Postmon Collection 
+[book-collection-manager.postman_collection.zip](https://github.com/user-attachments/files/17518794/book-collection-manager.postman_collection.zip)
+
 ## Dockerization
 
 This project can also be run using Docker. Follow these steps:
